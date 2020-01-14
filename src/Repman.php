@@ -13,6 +13,7 @@ use Composer\Plugin\PluginInterface;
 
 final class Repman implements PluginInterface, EventSubscriberInterface
 {
+    public const VERSION = '0.1.0';
     public const REPMAN_BASE_URL = 'https://127.0.0.1:8000';
 
     /**
@@ -26,6 +27,7 @@ final class Repman implements PluginInterface, EventSubscriberInterface
     public function activate(Composer $composer, IOInterface $io)
     {
         $this->io = $io;
+        $this->io->write(sprintf('Repman (%s) plugin activated', self::VERSION), true, IOInterface::VERBOSE);
     }
 
     /**
