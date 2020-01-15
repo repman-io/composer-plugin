@@ -1,8 +1,8 @@
 {
     "name": "buddy-works/repman-composer-plugin",
-    "license": "MIT",
     "type": "composer-plugin",
     "description": "Plugin for Repman - PHP Repository Manager",
+    "license": "MIT",
     "authors": [
         {
             "name": "Arkadiusz Kondas",
@@ -10,14 +10,17 @@
         }
     ],
     "require": {
-        "php": "^7.4.1",
+        "php": "^7.3",
         "composer-plugin-api": "^1.1"
     },
     "require-dev": {
-        "phpunit/phpunit": "^8.5",
         "composer/composer": "^1.9",
         "friendsofphp/php-cs-fixer": "^2.16",
-        "phpstan/phpstan": "^0.12.5"
+        "phpstan/phpstan": "^0.12.5",
+        "phpunit/phpunit": "^8.5"
+    },
+    "extra": {
+        "class": "Buddy\\Repman\\Composer\\Repman"
     },
     "autoload": {
         "psr-4": {
@@ -28,9 +31,6 @@
         "psr-4": {
             "Buddy\\Repman\\Composer\\Tests\\": "tests/"
         }
-    },
-    "extra": {
-        "class": "Buddy\\Repman\\Composer\\Repman"
     },
     "scripts": {
         "check-cs": [

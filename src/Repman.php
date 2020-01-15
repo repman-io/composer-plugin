@@ -14,12 +14,17 @@ use Composer\Plugin\PluginInterface;
 final class Repman implements PluginInterface, EventSubscriberInterface
 {
     public const VERSION = '0.1.0';
-    public const REPMAN_BASE_URL = 'https://127.0.0.1:8000';
+    public const DEFAULT_BASE_URL = 'https://127.0.0.1:8000';
 
     /**
      * @var IOInterface
      */
     private $io;
+
+    /**
+     * @var string
+     */
+    private $baseUrl;
 
     /**
      * @return void
@@ -28,6 +33,7 @@ final class Repman implements PluginInterface, EventSubscriberInterface
     {
         $this->io = $io;
         $this->io->write(sprintf('Repman (%s) plugin activated', self::VERSION), true, IOInterface::VERBOSE);
+        $this->baseUrl = rtrim($composer->getPackage()->getExtra()['repman']['url'] ?? self::DEFAULT_BASE_URL, '/');
     }
 
     /**
@@ -42,7 +48,7 @@ final class Repman implements PluginInterface, EventSubscriberInterface
 
     public function populateMirrors(InstallerEvent $installerEvent): void
     {
-        $this->io->write(sprintf('Populate packages dist mirror url with with %s', parse_url(self::REPMAN_BASE_URL, PHP_URL_HOST)), true, IOInterface::VERBOSE);
+        $this->io->write(sprintf('Populate packages dist mirror url with with %s', $this->baseUrl), true, IOInterface::VERBOSE);
 
         foreach ($installerEvent->getOperations() as $operation) {
             /** @phpstan-var mixed $operation */
@@ -60,7 +66,7 @@ final class Repman implements PluginInterface, EventSubscriberInterface
 
             $package->setDistMirrors([
                 [
-                    'url' => rtrim(self::REPMAN_BASE_URL, '/').'/dists/%package%/%version%/%reference%.%type%',
+                    'url' => $this->baseUrl.'/dists/%package%/%version%/%reference%.%type%',
                     'preferred' => true,
                 ],
             ]);
