@@ -14,7 +14,7 @@ use Composer\Plugin\PluginInterface;
 final class Repman implements PluginInterface, EventSubscriberInterface
 {
     public const VERSION = '0.1.0';
-    public const DEFAULT_BASE_URL = 'https://127.0.0.1:8000';
+    public const DEFAULT_BASE_URL = 'https://repo.repman.io';
 
     /**
      * @var IOInterface

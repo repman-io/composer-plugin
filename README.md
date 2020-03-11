@@ -1,6 +1,6 @@
 # Repman Composer Plugin
 
-[Composer](https://getcomposer.org/) plugin for [Repman - PHP Repository Manager](https://github.com/buddy-works/repman). Add mirror url for all your dependencies without need to update `composer.lock` file.
+[Composer](https://getcomposer.org/) plugin for [Repman - PHP Repository Manager](https://repman.io/proxy). Add mirror url for all your dependencies without need to update `composer.lock` file.
 
 ## Usage
 
@@ -12,7 +12,7 @@ composer global require buddy-works/repman-composer-plugin
 
 ### Custom Repman Server
 
-You can use this plugin even with custom Repman instance. Add this config to your `composer.json` file:
+You can use this plugin even with custom [standalone Repman](https://repman.io/standalone) instance. Add this config to your `composer.json` file:
 
 ```json
     "extra": {
