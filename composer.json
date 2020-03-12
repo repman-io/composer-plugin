@@ -1,5 +1,5 @@
 {
-    "name": "buddy-works/repman-composer-plugin",
+    "name": "repman-io/composer-plugin",
     "type": "composer-plugin",
     "description": "Plugin for Repman - PHP Repository Manager",
     "license": "MIT",
