@@ -25,19 +25,39 @@ final class RepmanTest extends TestCase
     public function testMirrorPopulation(): void
     {
         // then
-        $installPacakge = $this->prophesize(Package::class);
-        $installPacakge->setDistMirrors(Argument::type('array'))
+        $installPackage = $this->prophesize(Package::class);
+        $installPackage->getNotificationUrl()->willReturn('https://packagist.org/downloads/');
+        $installPackage->setDistMirrors(Argument::type('array'))
             ->shouldBeCalledTimes(1);
 
-        $updatePacakge = $this->prophesize(Package::class);
-        $updatePacakge->setDistMirrors(Argument::type('array'))
+        $updatePackage = $this->prophesize(Package::class);
+        $updatePackage->getNotificationUrl()->willReturn('https://packagist.org/downloads/');
+        $updatePackage->setDistMirrors(Argument::type('array'))
             ->shouldBeCalledTimes(1);
 
         // given
         $event = $this->prophesize(InstallerEvent::class);
         $event->getOperations()->willReturn([
-            new InstallOperation($installPacakge->reveal()),
-            new UpdateOperation($updatePacakge->reveal(), $updatePacakge->reveal()),
+            new InstallOperation($installPackage->reveal()),
+            new UpdateOperation($updatePackage->reveal(), $updatePackage->reveal()),
+        ]);
+
+        // when
+        $this->plugin->populateMirrors($event->reveal());
+    }
+
+    public function testSkipPackageNotFromPackagist(): void
+    {
+        //then
+        $installPackage = $this->prophesize(Package::class);
+        $installPackage->getNotificationUrl()->willReturn('https://buddy.repo.repman.wip/downloads');
+        $installPackage->setDistMirrors(Argument::type('array'))
+            ->shouldNotBeCalled();
+
+        // given
+        $event = $this->prophesize(InstallerEvent::class);
+        $event->getOperations()->willReturn([
+            new InstallOperation($installPackage->reveal()),
         ]);
 
         // when
@@ -47,8 +67,9 @@ final class RepmanTest extends TestCase
     public function testMirrorPopulationWithCustomUrl(): void
     {
         // then
-        $installPacakge = $this->prophesize(Package::class);
-        $installPacakge->setDistMirrors([
+        $installPackage = $this->prophesize(Package::class);
+        $installPackage->getNotificationUrl()->willReturn('https://packagist.org/downloads/');
+        $installPackage->setDistMirrors([
             [
                 'url' => 'https://repman.custom/dists/%package%/%version%/%reference%.%type%',
                 'preferred' => true,
@@ -70,7 +91,7 @@ final class RepmanTest extends TestCase
 
         $event = $this->prophesize(InstallerEvent::class);
         $event->getOperations()->willReturn([
-            new InstallOperation($installPacakge->reveal()),
+            new InstallOperation($installPackage->reveal()),
         ]);
 
         // when
