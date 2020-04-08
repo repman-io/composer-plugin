@@ -29,10 +29,14 @@ final class RepmanTest extends TestCase
         $installPackage->getNotificationUrl()->willReturn('https://packagist.org/downloads/');
         $installPackage->setDistMirrors(Argument::type('array'))
             ->shouldBeCalledTimes(1);
+        $installPackage->setNotificationUrl('https://repo.repman.io/downloads')
+            ->shouldBeCalledTimes(1);
 
         $updatePackage = $this->prophesize(Package::class);
         $updatePackage->getNotificationUrl()->willReturn('https://packagist.org/downloads/');
         $updatePackage->setDistMirrors(Argument::type('array'))
+            ->shouldBeCalledTimes(1);
+        $updatePackage->setNotificationUrl('https://repo.repman.io/downloads')
             ->shouldBeCalledTimes(1);
 
         // given
@@ -75,6 +79,8 @@ final class RepmanTest extends TestCase
                 'preferred' => true,
             ],
         ])
+            ->shouldBeCalledTimes(1);
+        $installPackage->setNotificationUrl('https://repman.custom/downloads')
             ->shouldBeCalledTimes(1);
 
         // given
