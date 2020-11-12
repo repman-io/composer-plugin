@@ -1,0 +1,12 @@
+{
+    "require": {
+        "repman-io/composer-plugin": "dev-master"
+    },
+    "repositories": [
+        {
+            "type": "path",
+            "version": "dev-master",
+            "url": "/buddy/composer-plugin"
+        }
+    ]
+}
