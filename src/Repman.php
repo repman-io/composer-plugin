@@ -39,8 +39,13 @@ final class Repman implements PluginInterface, EventSubscriberInterface
      */
     public static function getSubscribedEvents(): array
     {
+        $event = true === static::isComposerV2Api()
+            ? InstallerEvents::PRE_OPERATIONS_EXEC
+            : InstallerEvents::POST_DEPENDENCIES_SOLVING
+        ;
+
         return [
-            InstallerEvents::POST_DEPENDENCIES_SOLVING => [['populateMirrors', '9'.PHP_INT_MAX]],
+            $event => [['populateMirrors', '9'.PHP_INT_MAX]],
         ];
     }
 
@@ -48,7 +53,7 @@ final class Repman implements PluginInterface, EventSubscriberInterface
     {
         $this->io->write(sprintf('Populate packages dist mirror url with %s', $this->baseUrl), true, IOInterface::VERBOSE);
 
-        foreach ($installerEvent->getOperations() as $operation) {
+        foreach ($this->getOperationsFromInstallerEvent($installerEvent) as $operation) {
             /** @phpstan-var mixed $operation */
             if ('install' === $operation->getJobType()) {
                 $package = $operation->getPackage();
@@ -88,5 +93,19 @@ final class Repman implements PluginInterface, EventSubscriberInterface
     public function uninstall(Composer $composer, IOInterface $io): void
     {
         // TODO: Implement uninstall() method.
+    }
+
+    private function getOperationsFromInstallerEvent(InstallerEvent $event): array
+    {
+        if (true === static::isComposerV2Api()) {
+            return $event->getTransaction()->getOperations();
+        }
+
+        return $event->getOperations();
+    }
+
+    private static function isComposerV2Api(): bool
+    {
+        return version_compare(PluginInterface::PLUGIN_API_VERSION, '2.0.0', '>=');
     }
 }
