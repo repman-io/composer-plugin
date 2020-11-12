@@ -68,7 +68,7 @@ final class Repman implements PluginInterface, EventSubscriberInterface
                 continue;
             }
 
-            if (strstr((string) $package->getNotificationUrl(), 'packagist.org') === false) {
+            if (strpos((string) $package->getNotificationUrl(), 'packagist.org') === false) {
                 continue;
             }
 
