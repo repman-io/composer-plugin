@@ -43,7 +43,7 @@ final class Repman implements PluginInterface, EventSubscriberInterface
         $callables = [['populateMirrors', '9'.PHP_INT_MAX]];
 
         if (true === static::isComposerV2Api()) {
-            /** @phpstan-ignore-next-line */
+            /* @phpstan-ignore-next-line */
             return [InstallerEvents::PRE_OPERATIONS_EXEC => $callables];
         }
 
@@ -97,13 +97,12 @@ final class Repman implements PluginInterface, EventSubscriberInterface
     }
 
     /**
-     * @param InstallerEvent $event
      * @return OperationInterface[]|array
      */
     private function getOperationsFromInstallerEvent(InstallerEvent $event): array
     {
         if (true === static::isComposerV2Api()) {
-            /** @phpstan-ignore-next-line */
+            /* @phpstan-ignore-next-line */
             return $event->getTransaction()->getOperations();
         }
 
