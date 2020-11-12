@@ -32,7 +32,7 @@ final class Repman implements PluginInterface, EventSubscriberInterface
      * @param IOInterface $io
      * @return void
      */
-    public function activate(Composer $composer, IOInterface $io)
+    public function activate(Composer $composer, IOInterface $io): void
     {
         $this->io = $io;
         $this->io->write(sprintf('Repman plugin (%s) activated', self::VERSION), true, IOInterface::VERBOSE);
@@ -42,7 +42,7 @@ final class Repman implements PluginInterface, EventSubscriberInterface
     /**
      * @return array<mixed>
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             InstallerEvents::POST_DEPENDENCIES_SOLVING => [['populateMirrors', '9'.PHP_INT_MAX]],
