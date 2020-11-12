@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Buddy\Repman\Composer;
 
 use Composer\Composer;
+use Composer\DependencyResolver\Operation\OperationInterface;
 use Composer\EventDispatcher\EventSubscriberInterface;
 use Composer\Installer\InstallerEvent;
 use Composer\Installer\InstallerEvents;
@@ -39,14 +40,14 @@ final class Repman implements PluginInterface, EventSubscriberInterface
      */
     public static function getSubscribedEvents(): array
     {
-        $event = true === static::isComposerV2Api()
-            ? InstallerEvents::PRE_OPERATIONS_EXEC
-            : InstallerEvents::POST_DEPENDENCIES_SOLVING
-        ;
+        $callables = [['populateMirrors', '9'.PHP_INT_MAX]];
 
-        return [
-            $event => [['populateMirrors', '9'.PHP_INT_MAX]],
-        ];
+        if (true === static::isComposerV2Api()) {
+            /** @phpstan-ignore-next-line */
+            return [InstallerEvents::PRE_OPERATIONS_EXEC => $callables];
+        }
+
+        return [InstallerEvents::POST_DEPENDENCIES_SOLVING => $callables];
     }
 
     public function populateMirrors(InstallerEvent $installerEvent): void
@@ -95,9 +96,14 @@ final class Repman implements PluginInterface, EventSubscriberInterface
         // TODO: Implement uninstall() method.
     }
 
+    /**
+     * @param InstallerEvent $event
+     * @return OperationInterface[]|array
+     */
     private function getOperationsFromInstallerEvent(InstallerEvent $event): array
     {
         if (true === static::isComposerV2Api()) {
+            /** @phpstan-ignore-next-line */
             return $event->getTransaction()->getOperations();
         }
 
