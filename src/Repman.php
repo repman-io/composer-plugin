@@ -27,11 +27,6 @@ final class Repman implements PluginInterface, EventSubscriberInterface
      */
     private $baseUrl;
 
-    /**
-     * @param Composer $composer
-     * @param IOInterface $io
-     * @return void
-     */
     public function activate(Composer $composer, IOInterface $io): void
     {
         $this->io = $io;
