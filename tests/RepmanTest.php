@@ -8,6 +8,7 @@ use Buddy\Repman\Composer\Repman;
 use Composer\Composer;
 use Composer\DependencyResolver\Operation\InstallOperation;
 use Composer\DependencyResolver\Operation\UpdateOperation;
+use Composer\DependencyResolver\Transaction;
 use Composer\Installer\InstallerEvent;
 use Composer\IO\IOInterface;
 use Composer\Package\Package;
@@ -40,11 +41,14 @@ final class RepmanTest extends TestCase
             ->shouldBeCalledTimes(1);
 
         // given
-        $event = $this->prophesize(InstallerEvent::class);
-        $event->getOperations()->willReturn([
+        $transaction = $this->prophesize(Transaction::class);
+        $transaction->getOperations()->willReturn([
             new InstallOperation($installPackage->reveal()),
             new UpdateOperation($updatePackage->reveal(), $updatePackage->reveal()),
         ]);
+
+        $event = $this->prophesize(InstallerEvent::class);
+        $event->getTransaction()->willReturn($transaction);
 
         // when
         $this->plugin->populateMirrors($event->reveal());
@@ -59,10 +63,13 @@ final class RepmanTest extends TestCase
             ->shouldNotBeCalled();
 
         // given
-        $event = $this->prophesize(InstallerEvent::class);
-        $event->getOperations()->willReturn([
+        $transaction = $this->prophesize(Transaction::class);
+        $transaction->getOperations()->willReturn([
             new InstallOperation($installPackage->reveal()),
         ]);
+
+        $event = $this->prophesize(InstallerEvent::class);
+        $event->getTransaction()->willReturn($transaction);
 
         // when
         $this->plugin->populateMirrors($event->reveal());
@@ -95,10 +102,13 @@ final class RepmanTest extends TestCase
         $io = $this->prophesize(IOInterface::class);
         $this->plugin->activate($composer->reveal(), $io->reveal());
 
-        $event = $this->prophesize(InstallerEvent::class);
-        $event->getOperations()->willReturn([
+        $transaction = $this->prophesize(Transaction::class);
+        $transaction->getOperations()->willReturn([
             new InstallOperation($installPackage->reveal()),
         ]);
+
+        $event = $this->prophesize(InstallerEvent::class);
+        $event->getTransaction()->willReturn($transaction);
 
         // when
         $this->plugin->populateMirrors($event->reveal());

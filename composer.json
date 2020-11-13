@@ -11,10 +11,10 @@
     ],
     "require": {
         "php": "^7.2",
-        "composer-plugin-api": "^1.1"
+        "composer-plugin-api": "^2.0"
     },
     "require-dev": {
-        "composer/composer": "^1.9",
+        "composer/composer": "^2.0",
         "friendsofphp/php-cs-fixer": "^2.16",
         "phpstan/phpstan": "^0.12.5",
         "phpunit/phpunit": "^8.5"
@@ -48,7 +48,8 @@
         "tests": [
             "@check-cs",
             "@phpstan",
-            "@phpunit"
+            "@phpunit",
+            "cd tests-plugin && composer install"
         ]
     }
 }
