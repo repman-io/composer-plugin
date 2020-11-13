@@ -6,7 +6,7 @@
     {
       "type": "path",
       "version": "dev-master",
-      "url": "../.."
+      "url": ".."
     }
   ]
 }

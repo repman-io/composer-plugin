@@ -49,7 +49,7 @@
             "@check-cs",
             "@phpstan",
             "@phpunit",
-            "cd tests/plugin && composer install"
+            "cd tests-plugin && composer install"
         ]
     }
 }
