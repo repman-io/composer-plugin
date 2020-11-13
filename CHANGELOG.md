@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+On next release:
+- [ ] update src/Repman.php (VERSION)
+
+## [1.0.0] - 2020-11-13
+### Added
+- support for Composer V2
+
+### Removed
+- support for Composer V1 (older version of this plugin still supports composer v1)
+
 ## [0.1.3] - 2020-04-16
 ### Changed
 - minimum php version downgraded to 7.2
