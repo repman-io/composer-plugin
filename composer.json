@@ -11,10 +11,10 @@
     ],
     "require": {
         "php": "^7.2",
-        "composer-plugin-api": "^1.1|^2.0"
+        "composer-plugin-api": "^2.0"
     },
     "require-dev": {
-        "composer/composer": "^1.9|^2.0",
+        "composer/composer": "^2.0",
         "friendsofphp/php-cs-fixer": "^2.16",
         "phpstan/phpstan": "^0.12.5",
         "phpunit/phpunit": "^8.5"

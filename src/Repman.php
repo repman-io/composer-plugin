@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace Buddy\Repman\Composer;
 
 use Composer\Composer;
-use Composer\DependencyResolver\Operation\OperationInterface;
+use Composer\DependencyResolver\Operation\InstallOperation;
+use Composer\DependencyResolver\Operation\UpdateOperation;
 use Composer\EventDispatcher\EventSubscriberInterface;
 use Composer\Installer\InstallerEvent;
 use Composer\Installer\InstallerEvents;
@@ -40,25 +41,24 @@ final class Repman implements PluginInterface, EventSubscriberInterface
      */
     public static function getSubscribedEvents(): array
     {
-        $callables = [['populateMirrors', '9'.PHP_INT_MAX]];
-
-        if (true === static::isComposerV2Api()) {
-            /* @phpstan-ignore-next-line */
-            return [InstallerEvents::PRE_OPERATIONS_EXEC => $callables];
-        }
-
-        return [InstallerEvents::POST_DEPENDENCIES_SOLVING => $callables];
+        return [InstallerEvents::PRE_OPERATIONS_EXEC => ['populateMirrors', '9'.PHP_INT_MAX]];
     }
 
     public function populateMirrors(InstallerEvent $installerEvent): void
     {
         $this->io->write(sprintf('Populate packages dist mirror url with %s', $this->baseUrl), true, IOInterface::VERBOSE);
 
-        foreach ($this->getOperationsFromInstallerEvent($installerEvent) as $operation) {
-            /** @phpstan-var mixed $operation */
-            if ('install' === $operation->getJobType()) {
+        $transaction = $installerEvent->getTransaction();
+        if ($transaction === null) {
+            return;
+        }
+
+        foreach ($transaction->getOperations() as $operation) {
+            if ('install' === $operation->getOperationType()) {
+                /** @var InstallOperation $operation */
                 $package = $operation->getPackage();
-            } elseif ('update' === $operation->getJobType()) {
+            } elseif ('update' === $operation->getOperationType()) {
+                /** @var UpdateOperation $operation */
                 $package = $operation->getTargetPackage();
             } else {
                 continue;
@@ -93,24 +93,6 @@ final class Repman implements PluginInterface, EventSubscriberInterface
 
     public function uninstall(Composer $composer, IOInterface $io): void
     {
-        // TODO: Implement uninstall() method.
-    }
-
-    /**
-     * @return OperationInterface[]|array
-     */
-    private function getOperationsFromInstallerEvent(InstallerEvent $event): array
-    {
-        if (true === static::isComposerV2Api()) {
-            /* @phpstan-ignore-next-line */
-            return $event->getTransaction()->getOperations();
-        }
-
-        return $event->getOperations();
-    }
-
-    private static function isComposerV2Api(): bool
-    {
-        return version_compare(PluginInterface::PLUGIN_API_VERSION, '2.0.0', '>=');
+        // nothing to do here ;)
     }
 }
