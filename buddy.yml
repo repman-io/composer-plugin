@@ -63,6 +63,7 @@
         execute_commands:
             - "composer validate"
             - "composer update"
+            - rm -rf tests-plugin/composer.lock tests-plugin/vendor
             - "composer tests"
         setup_commands:
             - "echo \"memory_limit=-1\" >> /usr/local/etc/php/conf.d/buddy.ini"
