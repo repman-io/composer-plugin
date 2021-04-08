@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 On next release:
 - [ ] update src/Repman.php (VERSION)
 
+## [1.1.1] - 2021-04-08
+### Fixed
+- Using int for priority in event subscriber - Avoid PHP 8 Runtime exception (#14 thanks @pedro-stanaka)
+
 ## [1.1.0] - 2021-03-18
 ### Added
 - Allowing installation of plugin from PHP 7.2+ (incl 8.0) (#12 thanks @pedro-stanaka)
