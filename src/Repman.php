@@ -16,7 +16,10 @@ use Composer\Plugin\PluginInterface;
 
 final class Repman implements PluginInterface, EventSubscriberInterface
 {
+    /** @var string */
     public const VERSION = '1.1.0';
+
+    /** @var string */
     public const DEFAULT_BASE_URL = 'https://repo.repman.io';
 
     /**
@@ -41,7 +44,7 @@ final class Repman implements PluginInterface, EventSubscriberInterface
      */
     public static function getSubscribedEvents(): array
     {
-        return [InstallerEvents::PRE_OPERATIONS_EXEC => ['populateMirrors', '9'.PHP_INT_MAX]];
+        return [InstallerEvents::PRE_OPERATIONS_EXEC => ['populateMirrors', PHP_INT_MAX]];
     }
 
     public function populateMirrors(InstallerEvent $installerEvent): void
